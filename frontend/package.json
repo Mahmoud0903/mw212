@@ -1,8 +1,8 @@
 {
   "scripts": {
-    "start": "snowpack dev",
+    "start": "snowpack dev --open none",
     "build": "snowpack build",
-    "test": "echo \"This template does not include a test runner by default.\" && exit 1",
+    "test": "jest",
     "format": "prettier --write \"src/**/*.{ts,js}\"",
     "lint": "prettier --check \"src/**/*.{ts,js}\""
   },
@@ -12,9 +12,12 @@
   "devDependencies": {
     "@snowpack/plugin-typescript": "^1.2.1",
     "@types/canvas-confetti": "^1.0.0",
+    "@types/jest": "^29.5.14",
     "@types/snowpack-env": "^2.3.3",
+    "jest": "^29.7.0",
     "prettier": "^2.2.1",
     "snowpack": "^3.3.7",
+    "ts-jest": "^29.3.2",
     "typescript": "^4.2.4"
   }
 }

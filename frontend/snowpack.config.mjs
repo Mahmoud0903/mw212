@@ -4,6 +4,9 @@ export default {
     public: { url: '/', static: true },
     src: { url: '/dist' },
   },
+    alias: {
+    src: './src'
+  },
   plugins: [
     [
       '@snowpack/plugin-typescript',
@@ -25,7 +28,7 @@ export default {
     /* ... */
   },
   devOptions: {
-    /* ... */
+    port:3000
   },
   buildOptions: {
     /* ... */
