@@ -4,8 +4,8 @@ export default {
     public: { url: '/', static: true },
     src: { url: '/dist' },
   },
-    alias: {
-    src: './src'
+  alias: {
+    src: './src',
   },
   plugins: [
     [
@@ -28,9 +28,10 @@ export default {
     /* ... */
   },
   devOptions: {
-    port:3000
+    port: 3000,
   },
   buildOptions: {
     /* ... */
+    htmlFragments: true,
   },
 };

@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "start": "snowpack dev --open none",
+    "start": "snowpack dev --open /homepage.html",
     "build": "snowpack build",
     "test": "jest",
     "format": "prettier --write \"src/**/*.{ts,js}\"",
