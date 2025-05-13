@@ -17,6 +17,6 @@ async function includeHTML(id: string, filePath: string): Promise<void> {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  includeHTML('header-placeholder', '/header.html');
-  includeHTML('footer-placeholder', '/footer.html');
+  includeHTML('header-placeholder', '../organisms/header.html');
+  includeHTML('footer-placeholder', '../organisms/footer.html');
 });

@@ -14,6 +14,7 @@
     <title>Bibliothek</title>
   </head>
   <body>
+    <!-- Wird dynamisch durch headerFooterLayout reingeladen -->
     <div id="header-placeholder"></div>
     <main class="container mx-auto px-4 py-8">
       <section class="text-center mb-8">
@@ -25,11 +26,11 @@
         </p>
         <button
           class="bg-yellow-400 hover:bg-yellow-500 text-blue-700 font-bold py-3 px-6 rounded-full mt-6"
+          onclick="window.location.href='catalogue.html'"
         >
           Jetzt im Katalog stöbern
         </button>
       </section>
-
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div class="bg-white rounded-lg shadow-md p-6">
           <h2 class="text-xl font-semibold text-blue-700 mb-2">
@@ -130,6 +131,7 @@
       </section>
     </main>
 
+    <!-- Wird dynamisch durch headerFooterLayout reingeladen -->
     <div id="footer-placeholder"></div>
     <script type="module" src="/dist/views/headerFooterLayout.js"></script>
   </body>

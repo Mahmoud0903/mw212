@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Katalog - Stadtbibliothek</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="flex flex-col min-h-screen bg-gray-100 font-sans">
+    <!-- Wird dynamisch durch headerFooterLayout reingeladen -->
+    <div id="header-placeholder"></div>
+
+    <main
+      class="flex-1 container mx-auto px-4 py-8 grid grid-cols-1 lg:grid-cols-3 gap-8"
+    >
+      <aside class="bg-white rounded-lg shadow-md p-6">
+        <h2 class="text-xl font-semibold text-blue-700 mb-4">Katalog Primo</h2>
+        <p class="text-gray-700 mb-4">
+          Wählen Sie einen Suchraum für Ihre Recherche:
+        </p>
+
+        <div class="mb-6">
+          <h3 class="font-semibold text-blue-600 mb-2">UB-Bestand</h3>
+          <p class="text-gray-600 text-sm">
+            Hier finden Sie mehr als 2,7 Millionen Medien der UB Mannheim:
+            Bücher, E-Books, Zeitschriften, E-Journals, CDs, DVDs und
+            psychologische Tests.
+          </p>
+          <button
+            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md mt-2 text-sm"
+          >
+            Zum UB-Bestand
+          </button>
+        </div>
+
+        <div class="mb-6">
+          <h3 class="font-semibold text-blue-600 mb-2">
+            Aufsätze & UB-Bestand
+          </h3>
+          <p class="text-gray-600 text-sm">
+            Zusätzlich zum UB-Bestand durchsuchen Sie 100 Millionen Datensätze
+            nach wissenschaftlichen Papers, Aufsätzen in E-Journals und
+            Beiträgen in E-Books.
+          </p>
+          <button
+            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md mt-2 text-sm"
+          >
+            Zu Aufsätze & UB-Bestand
+          </button>
+        </div>
+
+        <div>
+          <h3 class="font-semibold text-blue-600 mb-2">Fernleihe</h3>
+          <p class="text-gray-600 text-sm">
+            Ihre Suche war erfolglos? Hier recherchieren Sie deutschlandweit im
+            Bestand wissenschaftlicher Bibliotheken und bestellen Ihr Medium mit
+            wenigen Klicks.
+          </p>
+          <button
+            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md mt-2 text-sm"
+          >
+            Zur Fernleihe
+          </button>
+        </div>
+      </aside>
+
+      <div class="col-span-2 bg-white rounded-lg shadow-md p-6">
+        <div class="flex items-center mb-6">
+          <div class="relative w-full">
+            <input
+              type="text"
+              class="bg-gray-100 border border-gray-300 rounded-full py-2 pl-4 pr-10 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
+              placeholder="Suche im Katalog Primo"
+            />
+            <button
+              class="absolute right-2 top-1/2 transform -translate-y-1/2 text-blue-600"
+            >
+              <svg class="h-5 w-5 fill-current" viewBox="0 0 20 20">
+                <path
+                  fill-rule="evenodd"
+                  d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="bg-gray-50 rounded-md p-4">
+            <h3 class="font-semibold text-blue-600 mb-2">
+              Mein Bibliothekskonto
+            </h3>
+            <ul class="list-none space-y-2 text-sm text-gray-700">
+              <li>
+                <a href="#" class="hover:underline"
+                  ><span class="mr-2">👤</span> Mein Konto</a
+                >
+              </li>
+              <li>
+                <a href="#" class="hover:underline"
+                  ><span class="mr-2">📍</span> Freie Sitzplätze</a
+                >
+              </li>
+              <li>
+                <a href="#" class="hover:underline"
+                  ><span class="mr-2">🕒</span> Öffnungszeiten</a
+                >
+              </li>
+              <li>
+                <a href="#" class="hover:underline"
+                  ><span class="mr-2">❓</span> Auskunft & Beratung</a
+                >
+              </li>
+              <li>
+                <a href="#" class="hover:underline"
+                  ><span class="mr-2">💬</span> Chat (Mo-Fr 10-18)</a
+                >
+              </li>
+            </ul>
+          </div>
+
+          <div class="bg-gray-50 rounded-md p-4">
+            <h3 class="font-semibold text-blue-600 mb-2">
+              Aktuelles aus der UB Mannheim
+            </h3>
+            <ul class="list-none space-y-2 text-sm text-gray-700">
+              <li>
+                <a href="#" class="hover:underline"
+                  >&gt; Neu lizensiert: „Oxford Research Encyclopedia of
+                  Linguistics“</a
+                >
+              </li>
+              <li>
+                <a href="#" class="hover:underline"
+                  >&gt; Lernen in der Bib – nutz die Pausenscheiben!</a
+                >
+              </li>
+              <li>
+                <a href="#" class="hover:underline"
+                  >&gt; VR-Playground im ExiLAB</a
+                >
+              </li>
+              <li>
+                <a href="#" class="hover:underline"
+                  >&gt; Erweiterte Öffnungszeiten während der Prüfungsphase</a
+                >
+              </li>
+              <li>
+                <a href="#" class="hover:underline"
+                  >&gt; EconData Workshop am 23. und 24. Juni</a
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Wird dynamisch durch headerFooterLayout reingeladen -->
+    <div id="footer-placeholder"></div>
+    <script type="module" src="/dist/views/headerFooterLayout.js"></script>
+  </body>
+</html>
