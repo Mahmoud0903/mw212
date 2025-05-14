@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Suchergebnisse - Stadtbibliothek</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      /* Optional: Füge hier CSS hinzu, um das Scrollen im Hauptergebnisbereich zu ermöglichen, falls nötig */
+      .scrollable-results {
+        max-height: 800px; /* Beispielhöhe, anpassen nach Bedarf */
+        overflow-y: auto;
+      }
+    </style>
+  </head>
+  <body class="bg-gray-100 font-sans">
+    <header class="bg-blue-600 text-white py-4">
+      <div class="container mx-auto px-4 flex items-center justify-between">
+        <div class="flex items-center">
+          <a href="/" class="text-xl font-bold">
+            <span class="text-yellow-400">Stadt</span>bibliothek
+          </a>
+          <div class="ml-6 relative w-96">
+            <input
+              id="searchInputKatalog"
+              type="text"
+              class="bg-blue-700 text-white rounded-full py-2 pl-4 pr-10 focus:outline-none focus:ring-2 focus:ring-yellow-400 w-full"
+              placeholder="Titel, Autor, Stichwort..."
+              value="Das gesuchte Buch"
+            />
+            <button
+              class="absolute right-2 top-1/2 transform -translate-y-1/2 text-white"
+            >
+              <svg class="h-5 w-5 fill-current" viewBox="0 0 20 20">
+                <path
+                  fill-rule="evenodd"
+                  d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+        <nav class="space-x-4">
+          <a href="/" class="hover:text-yellow-300">Startseite</a>
+          <a href="/katalog" class="hover:text-yellow-300 font-semibold"
+            >Katalog</a
+          >
+          <a href="#" class="hover:text-yellow-300">Tutorials</a>
+          <a href="#" class="hover:text-yellow-300">Datenbanken</a>
+          <a href="#" class="hover:text-yellow-300">Sammlungen</a>
+          <a href="#" class="hover:text-yellow-300">Hilfe</a>
+          <a href="#" class="hover:text-yellow-300">UB Chat</a>
+        </nav>
+      </div>
+    </header>
+
+    <main
+      class="container mx-auto px-4 py-8 grid grid-cols-1 lg:grid-cols-4 gap-8"
+    >
+      <aside class="bg-white rounded-lg shadow-md p-6">
+        <h2 class="text-xl font-semibold text-blue-700 mb-4">Filter</h2>
+        <div class="space-y-4">
+          <div>
+            <label class="block text-gray-700 text-sm font-bold mb-2"
+              >Verfügbarkeit:</label
+            >
+            <div class="space-y-2">
+              <label class="inline-flex items-center">
+                <input
+                  type="checkbox"
+                  class="form-checkbox h-5 w-5 text-blue-500 focus:ring-blue-500 rounded border-gray-300"
+                />
+                <span class="ml-2 text-gray-700">Verfügbar</span>
+              </label>
+              <label class="inline-flex items-center">
+                <input
+                  type="checkbox"
+                  class="form-checkbox h-5 w-5 text-blue-500 focus:ring-blue-500 rounded border-gray-300"
+                />
+                <span class="ml-2 text-gray-700">Ausgeliehen</span>
+              </label>
+              <label class="inline-flex items-center">
+                <input
+                  type="checkbox"
+                  class="form-checkbox h-5 w-5 text-blue-500 focus:ring-blue-500 rounded border-gray-300"
+                />
+                <span class="ml-2 text-gray-700">Bestellbar</span>
+              </label>
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-gray-700 text-sm font-bold mb-2"
+              >Format:</label
+            >
+            <div class="space-y-2">
+              <label class="inline-flex items-center">
+                <input
+                  type="checkbox"
+                  class="form-checkbox h-5 w-5 text-blue-500 focus:ring-blue-500 rounded border-gray-300"
+                />
+                <span class="ml-2 text-gray-700">Buch</span>
+              </label>
+              <label class="inline-flex items-center">
+                <input
+                  type="checkbox"
+                  class="form-checkbox h-5 w-5 text-blue-500 focus:ring-blue-500 rounded border-gray-300"
+                />
+                <span class="ml-2 text-gray-700">E-Book</span>
+              </label>
+              <label class="inline-flex items-center">
+                <input
+                  type="checkbox"
+                  class="form-checkbox h-5 w-5 text-blue-500 focus:ring-blue-500 rounded border-gray-300"
+                />
+                <span class="ml-2 text-gray-700">Zeitschrift</span>
+              </label>
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-gray-700 text-sm font-bold mb-2"
+              >Genre:</label
+            >
+            <select
+              class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            >
+              <option>Alle</option>
+              <option>Belletristik</option>
+              <option>Sachbuch</option>
+              <option>Kinderbuch</option>
+              <option>...</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-gray-700 text-sm font-bold mb-2"
+              >Autor:</label
+            >
+            <input
+              type="text"
+              class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              placeholder="Autor eingeben"
+            />
+          </div>
+
+          <button
+            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md focus:outline-none focus:shadow-outline"
+          >
+            Filter anwenden
+          </button>
+        </div>
+      </aside>
+
+      <section class="col-span-1 lg:col-span-3 scrollable-results">
+        <h2 class="text-xl font-semibold text-blue-700 mb-4">
+          Suchergebnisse für
+          <span class="font-bold italic">"Das gesuchte Buch"</span> (ca. 25
+          Ergebnisse)
+        </h2>
+
+        <div class="space-y-6">
+          <div class="bg-white rounded-lg shadow-md p-6 flex">
+            <div
+              class="w-32 h-40 bg-gray-200 rounded-md mr-6 flex-shrink-0 flex items-center justify-center text-gray-400"
+            >
+              <span>Cover</span>
+            </div>
+            <div>
+              <h3 class="text-lg font-semibold text-blue-700 mb-1">
+                Titel des Buches 1
+              </h3>
+              <p class="text-gray-600 mb-1">Autor: Autor A</p>
+              <p class="text-sm text-gray-500 mb-2">Kurze Inhaltsangabe...</p>
+              <p class="font-semibold text-green-500">Verfügbar</p>
+              <div class="mt-2">
+                <a
+                  href="#"
+                  class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md mr-2 text-sm"
+                  >Details</a
+                >
+                <button
+                  class="bg-yellow-400 hover:bg-yellow-500 text-blue-700 font-bold py-2 px-4 rounded-md text-sm"
+                >
+                  Vormerken
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-lg shadow-md p-6 flex">
+            <div
+              class="w-32 h-40 bg-gray-200 rounded-md mr-6 flex-shrink-0 flex items-center justify-center text-gray-400"
+            >
+              <span>Cover</span>
+            </div>
+            <div>
+              <h3 class="text-lg font-semibold text-blue-700 mb-1">
+                Ein weiterer Buchtitel
+              </h3>
+              <p class="text-gray-600 mb-1">Autor: Autor B</p>
+              <p class="text-sm text-gray-500 mb-2">
+                Eine weitere kurze Beschreibung...
+              </p>
+              <p class="font-semibold text-red-500">
+                Ausgeliehen bis 20.05.2025
+              </p>
+              <div class="mt-2">
+                <a
+                  href="#"
+                  class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md mr-2 text-sm"
+                  >Details</a
+                >
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-lg shadow-md p-6 flex">
+            <div
+              class="w-32 h-40 bg-gray-200 rounded-md mr-6 flex-shrink-0 flex items-center justify-center text-gray-400"
+            >
+              <span>Cover</span>
+            </div>
+            <div>
+              <h3 class="text-lg font-semibold text-blue-700 mb-1">
+                Noch ein Buch
+              </h3>
+              <p class="text-gray-600 mb-1">Autor: Autor C</p>
+              <p class="text-sm text-gray-500 mb-2">
+                Die dritte Inhaltsangabe...
+              </p>
+              <p class="font-semibold text-green-500">Verfügbar</p>
+              <div class="mt-2">
+                <a
+                  href="#"
+                  class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md mr-2 text-sm"
+                  >Details</a
+                >
+                <button
+                  class="bg-yellow-400 hover:bg-yellow-500 text-blue-700 font-bold py-2 px-4 rounded-md text-sm"
+                >
+                  Vormerken
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-lg shadow-md p-6 flex">
+            <div
+              class="w-32 h-40 bg-gray-200 rounded-md mr-6 flex-shrink-0 flex items-center justify-center text-gray-400"
+            >
+              <span>Cover</span>
+            </div>
+            <div>
+              <h3 class="text-lg font-semibold text-blue-700 mb-1">
+                Ein viertes Buch
+              </h3>
+              <p class="text-gray-600 mb-1">Autor: Autor D</p>
+              <p class="text-sm text-gray-500 mb-2">
+                Die vierte Beschreibung...
+              </p>
+              <p class="font-semibold text-orange-500">Bestellbar</p>
+              <div class="mt-2">
+                <a
+                  href="#"
+                  class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md mr-2 text-sm"
+                  >Details</a
+                >
+                <button
+                  class="bg-blue-300 hover:bg-blue-400 text-blue-700 font-bold py-2 px-4 rounded-md text-sm"
+                >
+                  Bestellen
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-lg shadow-md p-6 flex">
+            <div
+              class="w-32 h-40 bg-gray-200 rounded-md mr-6 flex-shrink-0 flex items-center justify-center text-gray-400"
+            >
+              <span>Cover</span>
+            </div>
+            <div>
+              <h3 class="text-lg font-semibold text-blue-700 mb-1">
+                Fünftes Werk
+              </h3>
+              <p class="text-gray-600 mb-1">Autor: Autor E</p>
+              <p class="text-sm text-gray-500 mb-2">
+                Die fünfte Zusammenfassung...
+              </p>
+              <p class="font-semibold text-green-500">Verfügbar</p>
+              <div class="mt-2">
+                <a
+                  href="#"
+                  class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md mr-2 text-sm"
+                  >Details</a
+                >
+                <button
+                  class="bg-yellow-400 hover:bg-yellow-500 text-blue-700 font-bold py-2 px-4 rounded-md text-sm"
+                >
+                  Vormerken
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-lg shadow-md p-6 flex">
+            <div
+              class="w-32 h-40 bg-gray-200 rounded-md mr-6 flex-shrink-0 flex items-center justify-center text-gray-400"
+            >
+              <span>Cover</span>
+            </div>
+            <div>
+              <h3 class="text-lg font-semibold text-blue-700 mb-1">
+                Sechstes Buch hier
+              </h3>
+              <p class="text-gray-600 mb-1">Autor: Autor F</p>
+              <p class="text-sm text-gray-500 mb-2">
+                Die sechste Beschreibung...
+              </p>
+              <p class="font-semibold text-red-500">
+                Ausgeliehen bis 25.05.2025
+              </p>
+              <div class="mt-2">
+                <a
+                  href="#"
+                  class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md mr-2 text-sm"
+                  >Details</a
+                >
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-lg shadow-md p-6 flex">
+            <div
+              class="w-32 h-40 bg-gray-200 rounded-md mr-6 flex-shrink-0 flex items-center justify-center text-gray-400"
+            >
+              <span>Cover</span>
+            </div>
+            <div>
+              <h3 class="text-lg font-semibold text-blue-700 mb-1">
+                Siebtes Exemplar
+              </h3>
+              <p class="text-gray-600 mb-1">Autor: Autor G</p>
+              <p class="text-sm text-gray-500 mb-2">
+                Die siebte Inhaltsangabe...
+              </p>
+              <p class="font-semibold text-green-500">Verfügbar</p>
+              <div class="mt-2">
+                <a
+                  href="#"
+                  class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md mr-2 text-sm"
+                  >Details</a
+                >
+                <button
+                  class="bg-yellow-400 hover:bg-yellow-500 text-blue-700 font-bold py-2 px-4 rounded-md text-sm"
+                >
+                  Vormerken
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-lg shadow-md p-6 flex">
+            <div
+              class="w-32 h-40 bg-gray-200 rounded-md mr-6 flex-shrink-0 flex items-center justify-center text-gray-400"
+            >
+              <span>Cover</span>
+            </div>
+            <div>
+              <h3 class="text-lg font-semibold text-blue-700 mb-1">
+                Achter Titel
+              </h3>
+              <p class="text-gray-600 mb-1">Autor: Autor H</p>
+              <p class="text-sm text-gray-5">acht</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+    <footer class="bg-blue-800 text-gray-300 py-6 mt-12">
+      <div
+        class="container mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-6 text-sm"
+      >
+        <div>
+          <h3 class="font-semibold mb-2">Kontakt</h3>
+          <p>Musterstraße 1</p>
+          <p>12345 Bibliothekstadt</p>
+          <p>Tel.: 01234 / 56789</p>
+        </div>
+        <div>
+          <h3 class="font-semibold mb-2">Öffnungszeiten</h3>
+          <p>Mo-Fr: 9-18 Uhr</p>
+          <p>Sa: 10-14 Uhr</p>
+        </div>
+        <div>
+          <h3 class="font-semibold mb-2">Links</h3>
+          <ul class="list-none space-y-1">
+            <li>
+              <a href="#" class="hover:text-white">Impressum</a>
+            </li>
+            <li>
+              <a href="#" class="hover:text-white">Datenschutz</a>
+            </li>
+            <li>
+              <a href="#" class="hover:text-white">Barrierefreiheit</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </footer>
+    <script type="module" src="/dist/views/results.js"></script>
+  </body>
+</html>
