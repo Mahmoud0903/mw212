@@ -9,12 +9,14 @@ export class Medium {
   autor: string;
   kategorie: string;
   status: MediumStatus;
+  bildLink: string;
 
-  constructor({ mediumId, titel, autor, kategorie, status }: Medium) {
+  constructor({ mediumId, titel, autor, kategorie, status, bildLink }: Medium) {
     this.mediumId = mediumId;
     this.titel = titel;
     this.autor = autor;
     this.kategorie = kategorie;
     this.status = status;
+    this.bildLink = bildLink;
   }
 }

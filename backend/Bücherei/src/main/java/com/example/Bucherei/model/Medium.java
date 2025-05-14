@@ -1,10 +1,12 @@
 package com.example.Bucherei.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 
 @Entity
+@Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "medium")
-public class Medium {
+public abstract class Medium {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,6 +17,8 @@ public class Medium {
     private String autor;
 
     private String kategorie;
+
+    private String bildLink;
 
     @Enumerated(EnumType.STRING)
     private MediumStatus status;
@@ -33,6 +37,20 @@ public class Medium {
     }
 
     // Getter & Setter
+
+    @JsonProperty("mediaType")
+    public String getMediaType() {
+        return this.getClass().getSimpleName().toUpperCase(); // z. B. "BUCH", "MAGAZIN"
+    }
+
+    public String getBildLink() {
+        return bildLink;
+    }
+
+    public void setBildLink(String bildLink) {
+        this.bildLink = bildLink;
+    }
+
 
     public Long getMediumId() {
         return mediumId;
