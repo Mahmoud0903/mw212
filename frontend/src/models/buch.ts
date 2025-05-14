@@ -9,8 +9,9 @@ export class Buch extends Medium {
     titel: string;
     autor: string;
     kategorie: string;
-    status: MediumStatus;
     bildLink: string;
+    status: MediumStatus;
+    mediumTyp: string;
     isbn: number;
     seitenanzahl: number;
   }) {

@@ -21,7 +21,7 @@ export async function fetchMediumByInput(input: string): Promise<Medium[]> {
 
   // Später erweitern mit E-books etc
   return medien.map((m: any) => {
-    switch (m.mediaType?.toUpperCase()) {
+    switch (m.mediumTyp?.toUpperCase()) {
       case 'BUCH':
         return new Buch(m);
       default:

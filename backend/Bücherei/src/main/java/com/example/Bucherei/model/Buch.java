@@ -29,4 +29,14 @@ public class Buch extends Medium {
     public void setIsbn(String isbn) {
         this.isbn = isbn;
     }
+
+    public Buch(String titel, String autor, String kategorie, String bildLink, MediumStatus mediumStatus, MediumTyp mediumTyp, String isbn, int seitenzahl) {
+        super(titel, autor, kategorie, bildLink, mediumStatus, mediumTyp);
+        this.isbn = isbn;
+        this.seitenzahl = seitenzahl;
+    }
+
+    public Buch(){
+
+    }
 }

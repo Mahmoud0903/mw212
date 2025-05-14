@@ -23,17 +23,22 @@ public abstract class Medium {
     @Enumerated(EnumType.STRING)
     private MediumStatus status;
 
+    @Enumerated(EnumType.STRING)
+    private MediumTyp mediumTyp;
+
     // Konstruktoren
 
     public Medium() {
         this.status = MediumStatus.VERFUEGBAR;
     }
 
-    public Medium(String titel, String autor, String kategorie) {
+    public Medium(String titel, String autor, String kategorie, String bildLink, MediumStatus mediumStatus, MediumTyp mediumTyp) {
         this.titel = titel;
         this.autor = autor;
         this.kategorie = kategorie;
-        this.status = MediumStatus.VERFUEGBAR;
+        this.bildLink = bildLink;
+        this.status = mediumStatus;
+        this.mediumTyp = mediumTyp;
     }
 
     // Getter & Setter
