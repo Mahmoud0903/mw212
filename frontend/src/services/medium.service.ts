@@ -3,10 +3,7 @@ import { Medium } from 'src/models/medium';
 
 export async function fetchMedium(): Promise<Medium> {
   const response = await fetch(`http://localhost:8080/api/medien`);
-
   const medium = await response.json();
-
-  console.log(medium);
   return new Medium(medium);
 }
 
@@ -18,7 +15,7 @@ export async function fetchMediumById(id: number): Promise<any> {
   return new Medium(medium);
 }
 
-export async function fetchMediumByInput(input: string): Promise<Medium[]> {
+export async function fetchMediumByInput(input: string): Promise<(Buch | Medium)[]> {
   const response = await fetch(`http://localhost:8080/api/medien/suche?begriff=${encodeURIComponent(input)}`);
 
   if (!response.ok) {

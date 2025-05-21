@@ -3,6 +3,13 @@ export enum MediumStatus {
   AUSGELIEHEN = 'AUSGELIEHEN',
   RESERVIERT = 'RESERVIERT',
 }
+
+export enum MediumTyp {
+  BUCH = 'BUCH',
+  ZEITSCHRIFT = 'ZEITSCHRIFT',
+  EBOOK = 'EBOOK',
+  DVD = 'DVD',
+}
 export class Medium {
   mediumId: number;
   titel: string;
@@ -10,7 +17,7 @@ export class Medium {
   kategorie: string;
   bildLink: string;
   status: MediumStatus;
-  mediumTyp: string;
+  mediumTyp: MediumTyp;
 
   constructor({ mediumId, titel, autor, kategorie, bildLink, status, mediumTyp }: Medium) {
     this.mediumId = mediumId;

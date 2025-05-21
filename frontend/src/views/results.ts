@@ -81,8 +81,14 @@ async function generateResultsHtml(searchTerm: string): Promise<void> {
     resultsContainer.innerHTML = ''; // Clear previous results
 
     medien.forEach((medium) => {
-      const mediumHtml = `
-        <div class="bg-white rounded-lg shadow-md p-6 flex">
+      if (medium instanceof Buch) {
+        const standortHtml = `
+         <p class="text-gray-600 mb-1">
+        Standort: ${medium.standort.stockwerk} – Regal ${medium.standort.regal}, Fach ${medium.standort.fach}
+      </p>
+    `;
+        const mediumHtml = `
+      <div class="bg-white rounded-lg shadow-md p-6 flex">
           <div class="w-32 h-40 bg-gray-200 rounded-md mr-6 flex-shrink-0 flex items-center justify-center overflow-hidden">
             <img src="${medium.bildLink}" alt="Cover von ${medium.titel}" class="object-cover w-full h-full">
           </div>
@@ -90,6 +96,7 @@ async function generateResultsHtml(searchTerm: string): Promise<void> {
             <h3 class="text-lg font-semibold text-blue-700 mb-1">${medium.titel}</h3>
             <p class="text-gray-600 mb-1">Autor: ${medium.autor}</p>
             <p id= "statusId${medium.mediumId}" class="font-semibold ${getStatusClass(medium.status)}">${medium.status}</p>
+            ${standortHtml}
             <div class="mt-2">
               <a href="#" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md mr-2 text-sm">Details</a>
                ${createReservierenButtonHTML(medium.status, medium.mediumId)}
@@ -97,7 +104,8 @@ async function generateResultsHtml(searchTerm: string): Promise<void> {
           </div> 
         </div>
       `;
-      resultsContainer.insertAdjacentHTML('beforeend', mediumHtml);
+        resultsContainer.insertAdjacentHTML('beforeend', mediumHtml);
+      }
     });
 
     listenReserveClick();
