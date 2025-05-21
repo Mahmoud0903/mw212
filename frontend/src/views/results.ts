@@ -1,4 +1,8 @@
-import { fetchMediumByInput } from 'src/services/medium.service';
+import { Buch } from 'src/models/buch';
+import { MediumStatus } from 'src/models/medium';
+import { Reservierung } from 'src/models/reservierung';
+import { fetchMediumById, fetchMediumByInput } from 'src/services/medium.service';
+import { formatDatum, getReservierungByMediumId, postReservierung } from 'src/services/reservieren.service';
 
 export {};
 
@@ -85,19 +89,95 @@ async function generateResultsHtml(searchTerm: string): Promise<void> {
           <div>
             <h3 class="text-lg font-semibold text-blue-700 mb-1">${medium.titel}</h3>
             <p class="text-gray-600 mb-1">Autor: ${medium.autor}</p>
-            <p class="font-semibold ${getStatusClass(medium.status)}">${medium.status}</p>
+            <p id= "statusId${medium.mediumId}" class="font-semibold ${getStatusClass(medium.status)}">${medium.status}</p>
             <div class="mt-2">
               <a href="#" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md mr-2 text-sm">Details</a>
-              <button class="bg-yellow-400 hover:bg-yellow-500 text-blue-700 font-bold py-2 px-4 rounded-md text-sm">Vormerken</button>
+               ${createReservierenButtonHTML(medium.status, medium.mediumId)}
             </div>
-          </div>
+          </div> 
         </div>
       `;
       resultsContainer.insertAdjacentHTML('beforeend', mediumHtml);
     });
 
+    listenReserveClick();
     updateHeadline(searchTerm, medien.length);
   } catch (error) {
     console.error('Fehler beim Laden der Medien:', error);
   }
+}
+
+function listenReserveClick(): void {
+  let btnReserve = document.querySelectorAll('.reserve');
+
+  btnReserve.forEach((btn) => {
+    btn.addEventListener('click', function (e) {
+      reserve(btn);
+    });
+  });
+}
+
+async function reserve(btn: any): Promise<Buch> {
+  await postReservierung(1, btn.dataset.mediumid);
+
+  const buch = await fetchMediumById(btn.dataset.mediumid); // Jetzt erneut laden
+
+  const statusSpan = document.getElementById(`statusId${buch.mediumId}`);
+  if (statusSpan) {
+    const reservierung = await getReserviertBis(buch.mediumId);
+    statusSpan.textContent = `${buch.status} bis ${formatDatum(reservierung.reserviertBis)}`;
+    statusSpan.className = 'font-semibold text-yellow-500';
+  }
+
+  // Jetzt Button aktualisieren
+  updateReservierenButton(btn);
+
+  return new Buch(buch);
+}
+
+function generateReservierenBtn(status: string, mediumId: number): string {
+  if (status === 'NICHT_VERFUEGBAR' || status === 'RESERVIERT' || status === 'AUSGELIEHEN') {
+    return `<button disabled data-mediumid=${mediumId} class="bg-yellow-500 text-white font-bold py-2 px-4 rounded-md mr-2 text-sm opacity-50 cursor-not-allowed pointer-events-none reserve">Reservieren</button>`;
+  } else {
+    return `<button  data-mediumid=${mediumId} class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded-md mr-2 text-sm reserve">Reservieren</button>`;
+  }
+}
+
+async function getReserviertBis(mediumId: number): Promise<Reservierung> {
+  const reservierung = await getReservierungByMediumId(mediumId);
+
+  return reservierung;
+}
+
+function createReservierenButtonHTML(status: string, mediumId: number): string {
+  const disabled = ['NICHT_VERFUEGBAR', 'RESERVIERT', 'AUSGELIEHEN'].includes(status);
+
+  return `
+    <button 
+      data-mediumid="${mediumId}" 
+      class="reserve ${getButtonClasses(disabled)}"
+      ${disabled ? 'disabled' : ''}
+    >
+      ${disabled ? 'Reserviert' : 'Reservieren'}
+    </button>`;
+}
+
+function getButtonClasses(disabled: boolean): string {
+  return [
+    'bg-yellow-500',
+    'text-white',
+    'font-bold',
+    'py-2',
+    'px-4',
+    'rounded-md',
+    'mr-2',
+    'text-sm',
+    disabled ? 'opacity-50 cursor-not-allowed pointer-events-none' : 'hover:bg-yellow-700',
+  ].join(' ');
+}
+
+function updateReservierenButton(btn: HTMLButtonElement): void {
+  btn.disabled = true;
+  btn.className = getButtonClasses(true);
+  btn.textContent = 'Reserviert';
 }
