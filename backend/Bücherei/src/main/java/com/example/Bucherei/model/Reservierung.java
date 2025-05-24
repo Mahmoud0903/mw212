@@ -33,7 +33,7 @@ public class Reservierung {
     public Reservierung(Nutzer nutzer, Medium medium) {
         this.nutzer = nutzer;
         this.medium = medium;
-        this.reserviertBis = LocalDateTime.now().plusMinutes(1);
+        this.reserviertBis = LocalDateTime.now().plusMinutes(3880);
         this.reservierungsdatum = LocalDate.now();
         this.status = ReservierungsStatus.OFFEN;
     }

@@ -13,7 +13,7 @@ export function generateHeader() {
       <a href="http://localhost:3000/" class="hover:text-yellow-300">Startseite</a>
       <a href="http://localhost:3000/catalogue.html" class="hover:text-yellow-300">Katalog</a>
       <a href="#" class="hover:text-yellow-300">Veranstaltungen</a>
-      <a href="#" class="hover:text-yellow-300">Mein Konto</a>
+      <a href="http://localhost:3000/userAccountList.html" class="hover:text-yellow-300">Mein Konto</a>
       <a href="#" class="hover:text-yellow-300">Hilfe</a>
     </nav>
   </div>

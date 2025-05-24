@@ -1,5 +1,5 @@
 import { Buch } from 'src/models/buch';
-import { MediumStatus } from 'src/models/medium';
+import { Medium, MediumStatus } from 'src/models/medium';
 import { Reservierung } from 'src/models/reservierung';
 import { fetchMediumById, fetchMediumByInput } from 'src/services/medium.service';
 import { formatDatum, getReservierungByMediumId, postReservierung } from 'src/services/reservieren.service';
@@ -125,29 +125,26 @@ function listenReserveClick(): void {
   });
 }
 
-async function reserve(btn: any): Promise<Buch> {
+async function reserve(btn: any): Promise<Buch | Medium> {
   await postReservierung(1, btn.dataset.mediumid);
 
-  const buch = await fetchMediumById(btn.dataset.mediumid); // Jetzt erneut laden
+  const medium = await fetchMediumById(btn.dataset.mediumid); // Jetzt erneut laden
 
-  const statusSpan = document.getElementById(`statusId${buch.mediumId}`);
+  const statusSpan = document.getElementById(`statusId${medium.mediumId}`);
   if (statusSpan) {
-    const reservierung = await getReserviertBis(buch.mediumId);
-    statusSpan.textContent = `${buch.status} bis ${formatDatum(reservierung.reserviertBis)}`;
+    const reservierung = await getReserviertBis(medium.mediumId);
+    statusSpan.textContent = `${medium.status} bis ${formatDatum(reservierung.reserviertBis)}`;
     statusSpan.className = 'font-semibold text-yellow-500';
   }
 
   // Jetzt Button aktualisieren
   updateReservierenButton(btn);
 
-  return new Buch(buch);
-}
-
-function generateReservierenBtn(status: string, mediumId: number): string {
-  if (status === 'NICHT_VERFUEGBAR' || status === 'RESERVIERT' || status === 'AUSGELIEHEN') {
-    return `<button disabled data-mediumid=${mediumId} class="bg-yellow-500 text-white font-bold py-2 px-4 rounded-md mr-2 text-sm opacity-50 cursor-not-allowed pointer-events-none reserve">Reservieren</button>`;
+  if (medium instanceof Buch) {
+    return new Buch(medium);
   } else {
-    return `<button  data-mediumid=${mediumId} class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded-md mr-2 text-sm reserve">Reservieren</button>`;
+    console.error('Das Medium ist kein Buch.');
+    return new Medium(medium);
   }
 }
 

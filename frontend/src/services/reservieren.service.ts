@@ -1,3 +1,5 @@
+import { Reservierung } from 'src/models/reservierung';
+
 export async function postReservierung(nutzerid: number, mediumId: number) {
   const response = await fetch(`http://localhost:8080/api/reservierungen?nutzerId=${nutzerid}&mediumId=${mediumId}`, { method: 'post' });
 
@@ -24,6 +26,17 @@ export async function getReservierungByMediumId(mediumId: number) {
     console.error('Fehler beim Parsen der JSON-Antwort:', e);
     return null;
   }
+}
+
+export async function getReservierungenByNutzerId(nutzerId: number): Promise<Reservierung[]> {
+  const response = await fetch(`http://localhost:8080/api/reservierungen/nutzer/${nutzerId}`);
+  if (!response.ok) {
+    throw new Error('Fehler beim Laden der Reservierungen');
+  }
+  const reservierungen = await response.json();
+  console.log(reservierungen);
+
+  return reservierungen;
 }
 
 export function formatDatum(datum: string): string {
