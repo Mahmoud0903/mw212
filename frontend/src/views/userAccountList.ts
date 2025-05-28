@@ -36,7 +36,7 @@ async function generiereReservierungenListe(): Promise<void> {
               <div>
                 <h3 class="text-lg font-semibold text-blue-700">${reservierung.medium.titel}</h3>
                 <p class="text-gray-600 text-sm">${reservierung.medium.autor}</p>
-                <p class="text-gray-500 text-xs">${reservierung.reservierungsdatum}</p>
+                <p class="text-gray-500 text-xs"> Reserviert am ${formatDatum(reservierung.reservierungsdatum.toString())}</p>
                 <p class="${addDateStyle(formatDatum(reservierung.reserviertBis))} font-semibold text-sm ">Reserviert bis: ${formatDatum(
         reservierung.reserviertBis,
       )} </p>

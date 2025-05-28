@@ -107,7 +107,19 @@ async function generiereErgebnisHtml(suchBegriff: string): Promise<void> {
 
     ergebnisContainer.innerHTML = '';
 
-    medien.forEach((medium) => {
+    // Reservierungsdaten für alle Medien vorab laden
+    const reservierungen = await Promise.all(
+      medien.map(async (medium) => {
+        try {
+          return await holeReserviertBis(medium.mediumId);
+        } catch (error) {
+          return null;
+        }
+      }),
+    );
+
+    medien.forEach((medium, idx) => {
+      const reservierung = reservierungen[idx];
       if (medium instanceof Buch) {
         const standortHtml = `
          <p class="text-gray-600 mb-1">
@@ -122,7 +134,9 @@ async function generiereErgebnisHtml(suchBegriff: string): Promise<void> {
           <div>
             <h3 class="text-lg font-semibold text-blue-700 mb-1">${medium.titel}</h3>
             <p class="text-gray-600 mb-1">Autor: ${medium.autor}</p>
-            <p id= "statusId${medium.mediumId}" class="font-semibold ${holeStatusKlasse(medium.status)}">${medium.status}</p>
+            <p id= "statusId${medium.mediumId}" class="font-semibold ${holeStatusKlasse(medium.status)}">${medium.status} ${
+          reservierung && reservierung.reserviertBis ? ' ' + formatDatum(reservierung.reserviertBis) : ''
+        }</p>
             ${standortHtml}
             <div class="mt-2">
               <a href="#" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md mr-2 text-sm">Details</a>
@@ -161,6 +175,8 @@ function hoereReservierenKlick(): void {
  * @returns Das reservierte Medium als Buch oder Medium
  */
 async function reservieren(btn: any): Promise<Buch | Medium> {
+  console.log('ww');
+
   await postReservierung(1, btn.dataset.mediumid);
 
   const medium = await fetchMediumById(btn.dataset.mediumid);
