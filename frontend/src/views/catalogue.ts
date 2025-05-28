@@ -1,22 +1,30 @@
+/**
+ * Dieses Skript behandelt die Suchfunktion im Katalog.
+ * Es reagiert auf Button-Klicks und Enter-Tastendrücke im Suchfeld und leitet zur Ergebnisseite weiter.
+ */
 export {};
 
 document.addEventListener('DOMContentLoaded', () => {
-  const searchInput = document.getElementById('searchInputKatalog') as HTMLInputElement | null;
-  const searchButton = document.getElementById('searchButtonKatalog') as HTMLButtonElement | null;
+  /**
+   * Initialisiert die Sucheingabe und den Suchbutton.
+   * Bei Klick oder Enter wird zur Ergebnisseite mit dem Suchbegriff weitergeleitet.
+   */
+  const suchEingabe = document.getElementById('searchInputKatalog') as HTMLInputElement | null;
+  const suchButton = document.getElementById('searchButtonKatalog') as HTMLButtonElement | null;
 
-  if (searchButton && searchInput) {
-    searchButton.addEventListener('click', () => {
-      const searchTerm = searchInput.value.trim();
-      if (searchTerm) {
-        window.location.href = `results.html?search=${encodeURIComponent(searchTerm)}`;
+  if (suchButton && suchEingabe) {
+    suchButton.addEventListener('click', () => {
+      const suchBegriff = suchEingabe.value.trim();
+      if (suchBegriff) {
+        window.location.href = `results.html?search=${encodeURIComponent(suchBegriff)}`;
       } else {
         alert('Bitte gib einen Suchbegriff ein.');
       }
     });
 
-    searchInput.addEventListener('keypress', (event) => {
+    suchEingabe.addEventListener('keypress', (event) => {
       if (event.key === 'Enter') {
-        searchButton.click();
+        suchButton.click();
       }
     });
   } else {

@@ -1,13 +1,21 @@
+/**
+ * Dieses Skript stellt Funktionen zur Generierung von Header, Footer und Suchleiste bereit.
+ * Die Komponenten werden als HTML-Strings zurückgegeben und können in die Seite eingebunden werden.
+ */
 export {};
 
-export function generateHeader() {
+/**
+ * Gibt das HTML für den Seiten-Header zurück.
+ * @returns HTML-String für den Header
+ */
+export function generiereHeader() {
   return `<header class="bg-blue-600 text-white py-4">
   <div class="container mx-auto px-4 flex items-center justify-between">
     <div class="flex items-center">
       <a href="http://localhost:3000/" class="text-xl font-bold">
         <span class="text-yellow-400">Stadt</span>bibliothek
       </a>
-      ${generateSearchBar()}
+      ${generiereSuchleiste()}
     </div>
     <nav class="space-x-4">
       <a href="http://localhost:3000/" class="hover:text-yellow-300">Startseite</a>
@@ -21,7 +29,11 @@ export function generateHeader() {
 `;
 }
 
-export function generateSearchBar(): string {
+/**
+ * Gibt die Suchleiste nur auf der Ergebnisseite zurück.
+ * @returns HTML-String für die Suchleiste
+ */
+export function generiereSuchleiste(): string {
   if (window.location.pathname === '/results.html') {
     return `<div class="ml-6 relative w-96">
             <input
@@ -46,7 +58,11 @@ export function generateSearchBar(): string {
   }
 }
 
-function generateFooter() {
+/**
+ * Gibt das HTML für den Seiten-Footer zurück.
+ * @returns HTML-String für den Footer
+ */
+function generiereFooter() {
   return `<footer class="bg-blue-800 text-gray-300 py-6 mt-12">
   <div
     class="container mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-6 text-sm"
@@ -79,10 +95,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const footer = document.getElementById('footer-placeholder');
 
   if (header) {
-    header.innerHTML = generateHeader();
+    header.innerHTML = generiereHeader();
   }
 
   if (footer) {
-    footer.innerHTML = generateFooter();
+    footer.innerHTML = generiereFooter();
   }
 });

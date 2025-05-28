@@ -1,3 +1,7 @@
+/**
+ * Dieses Skript behandelt die Anzeige und Suche von Medienergebnissen sowie die Reservierungslogik.
+ * Initialisiert die Suchfeld- und Button-Events und verarbeitet die Suchparameter.
+ */
 import { Buch } from 'src/models/buch';
 import { Medium, MediumStatus } from 'src/models/medium';
 import { Reservierung } from 'src/models/reservierung';
@@ -6,38 +10,49 @@ import { formatDatum, getReservierungByMediumId, postReservierung } from 'src/se
 
 export {};
 
-// Initialisierung
+/**
+ * Initialisiert die Sucheingabe, verarbeitet Suchparameter und setzt Event Listener.
+ */
 document.addEventListener('DOMContentLoaded', () => {
-  const searchInput = document.getElementById('searchInputKatalog') as HTMLInputElement | null;
-  const searchButton = document.getElementById('buttonSearch');
-  const urlParams = new URLSearchParams(window.location.search);
-  const searchTerm = urlParams.get('search');
+  const suchEingabe = document.getElementById('searchInputKatalog') as HTMLInputElement | null;
+  const suchButton = document.getElementById('buttonSearch');
+  const urlParameter = new URLSearchParams(window.location.search);
+  const suchBegriff = urlParameter.get('search');
 
-  if (searchInput) {
-    if (searchTerm) {
-      searchInput.value = decodeURIComponent(searchTerm);
-      generateResultsHtml(searchTerm);
+  if (suchEingabe) {
+    if (suchBegriff) {
+      suchEingabe.value = decodeURIComponent(suchBegriff);
+      generiereErgebnisHtml(suchBegriff);
     } else {
-      searchInput.placeholder = 'Gib einen Suchbegriff ein';
+      suchEingabe.placeholder = 'Gib einen Suchbegriff ein';
     }
 
-    searchInput.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') handleSearch();
+    suchEingabe.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') sucheBehandeln();
     });
   } else {
     console.error('Suchfeld auf der Ergebnisseite nicht gefunden.');
   }
 
-  searchButton?.addEventListener('click', handleSearch);
+  suchButton?.addEventListener('click', sucheBehandeln);
 });
 
-// Hilfsfunktionen
-function getInputValueById(id: string): string {
-  const input = document.getElementById(id) as HTMLInputElement | null;
-  return input?.value.trim() ?? '';
+/**
+ * Liefert den Wert eines Eingabefelds anhand der ID.
+ * @param id - Die ID des Eingabefelds
+ * @returns Der getrimmte Wert als String
+ */
+function getEingabeWertNachId(id: string): string {
+  const eingabe = document.getElementById(id) as HTMLInputElement | null;
+  return eingabe?.value.trim() ?? '';
 }
 
-function getStatusClass(status: string): string {
+/**
+ * Gibt eine CSS-Klasse für den Status eines Mediums zurück.
+ * @param status - Der Status des Mediums
+ * @returns CSS-Klassenname als String
+ */
+function holeStatusKlasse(status: string): string {
   switch (status.toUpperCase()) {
     case 'VERFUEGBAR':
       return 'text-green-500';
@@ -50,35 +65,47 @@ function getStatusClass(status: string): string {
   }
 }
 
-function updateHeadline(searchTerm: string, anzahl: number): void {
-  const heading = document.getElementById('resultsHeadline');
-  if (heading) {
-    heading.innerHTML = `Suchergebnisse für <span class="font-bold italic">"${searchTerm}"</span> (${anzahl} Ergebnis${anzahl !== 1 ? 'se' : ''})`;
+/**
+ * Aktualisiert die Überschrift der Suchergebnisse.
+ * @param suchBegriff - Der aktuelle Suchbegriff
+ * @param anzahl - Die Anzahl der gefundenen Ergebnisse
+ */
+function aktualisiereUeberschrift(suchBegriff: string, anzahl: number): void {
+  const ueberschrift = document.getElementById('resultsHeadline');
+  if (ueberschrift) {
+    ueberschrift.innerHTML = `Suchergebnisse für <span class="font-bold italic">"${suchBegriff}"</span> (${anzahl} Ergebnis${
+      anzahl !== 1 ? 'se' : ''
+    })`;
   }
 }
 
-// Event-Handler
-function handleSearch(): void {
-  const searchTerm = getInputValueById('searchInputKatalog');
-  if (searchTerm.length > 0) {
-    generateResultsHtml(searchTerm);
+/**
+ * Behandelt die Suche, wenn der Benutzer auf den Suchbutton klickt oder die Eingabetaste drückt.
+ */
+function sucheBehandeln(): void {
+  const suchBegriff = getEingabeWertNachId('searchInputKatalog');
+  if (suchBegriff.length > 0) {
+    generiereErgebnisHtml(suchBegriff);
   } else {
     console.warn('Bitte Suchbegriff eingeben.');
   }
 }
 
-// HTML-Erzeugung
-async function generateResultsHtml(searchTerm: string): Promise<void> {
+/**
+ * Generiert die HTML für die Suchergebnisse basierend auf dem Suchbegriff.
+ * @param suchBegriff - Der Suchbegriff
+ */
+async function generiereErgebnisHtml(suchBegriff: string): Promise<void> {
   try {
-    const medien = await fetchMediumByInput(searchTerm);
-    const resultsContainer = document.getElementById('resultsContainer');
+    const medien: (Buch | Medium)[] = await fetchMediumByInput(suchBegriff);
+    const ergebnisContainer = document.getElementById('resultsContainer');
 
-    if (!resultsContainer) {
+    if (!ergebnisContainer) {
       console.error('Ergebnis-Container nicht gefunden.');
       return;
     }
 
-    resultsContainer.innerHTML = ''; // Clear previous results
+    ergebnisContainer.innerHTML = '';
 
     medien.forEach((medium) => {
       if (medium instanceof Buch) {
@@ -95,50 +122,57 @@ async function generateResultsHtml(searchTerm: string): Promise<void> {
           <div>
             <h3 class="text-lg font-semibold text-blue-700 mb-1">${medium.titel}</h3>
             <p class="text-gray-600 mb-1">Autor: ${medium.autor}</p>
-            <p id= "statusId${medium.mediumId}" class="font-semibold ${getStatusClass(medium.status)}">${medium.status}</p>
+            <p id= "statusId${medium.mediumId}" class="font-semibold ${holeStatusKlasse(medium.status)}">${medium.status}</p>
             ${standortHtml}
             <div class="mt-2">
               <a href="#" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md mr-2 text-sm">Details</a>
-               ${createReservierenButtonHTML(medium.status, medium.mediumId)}
+               ${erstelleReservierenButtonHTML(medium.status, medium.mediumId)}
             </div>
           </div> 
         </div>
       `;
-        resultsContainer.insertAdjacentHTML('beforeend', mediumHtml);
+        ergebnisContainer.insertAdjacentHTML('beforeend', mediumHtml);
       }
     });
 
-    listenReserveClick();
-    updateHeadline(searchTerm, medien.length);
+    hoereReservierenKlick();
+    aktualisiereUeberschrift(suchBegriff, medien.length);
   } catch (error) {
     console.error('Fehler beim Laden der Medien:', error);
   }
 }
 
-function listenReserveClick(): void {
-  let btnReserve = document.querySelectorAll('.reserve');
+/**
+ * Setzt Event Listener für alle Reservieren-Buttons.
+ */
+function hoereReservierenKlick(): void {
+  let btnReservieren = document.querySelectorAll('.reserve');
 
-  btnReserve.forEach((btn) => {
+  btnReservieren.forEach((btn) => {
     btn.addEventListener('click', function (e) {
-      reserve(btn);
+      reservieren(btn);
     });
   });
 }
 
-async function reserve(btn: any): Promise<Buch | Medium> {
+/**
+ * Reserviert ein Medium und aktualisiert den Status im UI.
+ * @param btn - Der Button, der geklickt wurde
+ * @returns Das reservierte Medium als Buch oder Medium
+ */
+async function reservieren(btn: any): Promise<Buch | Medium> {
   await postReservierung(1, btn.dataset.mediumid);
 
-  const medium = await fetchMediumById(btn.dataset.mediumid); // Jetzt erneut laden
+  const medium = await fetchMediumById(btn.dataset.mediumid);
 
   const statusSpan = document.getElementById(`statusId${medium.mediumId}`);
   if (statusSpan) {
-    const reservierung = await getReserviertBis(medium.mediumId);
+    const reservierung = await holeReserviertBis(medium.mediumId);
     statusSpan.textContent = `${medium.status} bis ${formatDatum(reservierung.reserviertBis)}`;
     statusSpan.className = 'font-semibold text-yellow-500';
   }
 
-  // Jetzt Button aktualisieren
-  updateReservierenButton(btn);
+  aktualisiereReservierenButton(btn);
 
   if (medium instanceof Buch) {
     return new Buch(medium);
@@ -148,26 +182,41 @@ async function reserve(btn: any): Promise<Buch | Medium> {
   }
 }
 
-async function getReserviertBis(mediumId: number): Promise<Reservierung> {
+/**
+ * Holt die Reservierungsdaten für ein Medium.
+ * @param mediumId - Die ID des Mediums
+ * @returns Promise mit Reservierungsdaten
+ */
+async function holeReserviertBis(mediumId: number): Promise<Reservierung> {
   const reservierung = await getReservierungByMediumId(mediumId);
-
   return reservierung;
 }
 
-function createReservierenButtonHTML(status: string, mediumId: number): string {
-  const disabled = ['NICHT_VERFUEGBAR', 'RESERVIERT', 'AUSGELIEHEN'].includes(status);
+/**
+ * Erstellt das HTML für den Reservieren-Button abhängig vom Status.
+ * @param status - Der Status des Mediums
+ * @param mediumId - Die ID des Mediums
+ * @returns HTML-String für den Button
+ */
+function erstelleReservierenButtonHTML(status: string, mediumId: number): string {
+  const deaktiviert = ['NICHT_VERFUEGBAR', 'RESERVIERT', 'AUSGELIEHEN'].includes(status);
 
   return `
     <button 
       data-mediumid="${mediumId}" 
-      class="reserve ${getButtonClasses(disabled)}"
-      ${disabled ? 'disabled' : ''}
+      class="reserve ${getButtonKlassen(deaktiviert)}"
+      ${deaktiviert ? 'disabled' : ''}
     >
-      ${disabled ? 'Reserviert' : 'Reservieren'}
+      ${deaktiviert ? 'Reserviert' : 'Reservieren'}
     </button>`;
 }
 
-function getButtonClasses(disabled: boolean): string {
+/**
+ * Gibt die CSS-Klassen für den Reservieren-Button zurück.
+ * @param deaktiviert - Ob der Button deaktiviert ist
+ * @returns CSS-Klassen als String
+ */
+function getButtonKlassen(deaktiviert: boolean): string {
   return [
     'bg-yellow-500',
     'text-white',
@@ -177,12 +226,16 @@ function getButtonClasses(disabled: boolean): string {
     'rounded-md',
     'mr-2',
     'text-sm',
-    disabled ? 'opacity-50 cursor-not-allowed pointer-events-none' : 'hover:bg-yellow-700',
+    deaktiviert ? 'opacity-50 cursor-not-allowed pointer-events-none' : 'hover:bg-yellow-700',
   ].join(' ');
 }
 
-function updateReservierenButton(btn: HTMLButtonElement): void {
+/**
+ * Aktualisiert den Reservieren-Button nach erfolgreicher Reservierung.
+ * @param btn - Der Button, der aktualisiert werden soll
+ */
+function aktualisiereReservierenButton(btn: HTMLButtonElement): void {
   btn.disabled = true;
-  btn.className = getButtonClasses(true);
+  btn.className = getButtonKlassen(true);
   btn.textContent = 'Reserviert';
 }

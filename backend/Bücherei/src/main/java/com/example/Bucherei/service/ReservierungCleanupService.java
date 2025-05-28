@@ -23,12 +23,6 @@ public class ReservierungCleanupService {
         this.mediumRepository = mediumRepository;
     }
 
-    // Cron: täglich um Mitternacht
-   /* @Scheduled(fixedRate = 60000) // alle 60 Sekunden
-    public void removeExpiredReservations() {
-        repository.deleteExpired(LocalDateTime.now());
-    }*/
-
     @Scheduled(fixedRate = 60000)
     public void removeExpiredReservations() {
         List<Reservierung> abgelaufene = reservierungRepository.findByReserviertBisBefore(LocalDateTime.now());

@@ -18,7 +18,7 @@ export class Buch extends Medium {
     seitenanzahl: number;
     standort: Standort;
   }) {
-    super(buch); // Übergibt die Basisklassenfelder
+    super(buch);
     this.isbn = buch.isbn;
     this.seitenanzahl = buch.seitenanzahl;
     this.standort = buch.standort;

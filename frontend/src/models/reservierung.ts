@@ -1,9 +1,9 @@
 import { Medium } from './medium';
-import { User } from './user';
+import { Nutzer } from './user';
 
 export interface Reservierung {
   id: number;
-  user: User;
+  nutzer: Nutzer;
   medium: Medium;
   reservierungsdatum: Date;
   status: string;
