@@ -43,7 +43,7 @@ public abstract class Medium {
 
     // Getter & Setter
 
-    @JsonProperty("mediaType")
+    @JsonProperty("mediumTyp")
     public String getMediaType() {
         return this.getClass().getSimpleName().toUpperCase(); // z. B. "BUCH", "MAGAZIN"
     }

@@ -1,4 +1,4 @@
-export class User {
+export class Nutzer {
   id: number;
   name: string;
   email: string;
@@ -8,16 +8,7 @@ export class User {
   regiestrirungsdatum: Date;
   telefonnummer: string;
 
-  constructor({
-    id,
-    name,
-    email,
-    passwort,
-    adresse,
-    geburtsdatum,
-    regiestrirungsdatum,
-    telefonnummer,
-  }: User) {
+  constructor({ id, name, email, passwort, adresse, geburtsdatum, regiestrirungsdatum, telefonnummer }: Nutzer) {
     this.id = id;
     this.name = name;
     this.email = email;

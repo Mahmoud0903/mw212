@@ -3,6 +3,7 @@ package com.example.Bucherei.controller;
 import com.example.Bucherei.model.Reservierung;
 import com.example.Bucherei.service.ReservierungService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -33,4 +34,12 @@ public class ReservierungController {
         return reservierungService.storniereReservierung(reservierungsId);
     }
 
-}
+    @GetMapping("/{mediumId}")
+    public ResponseEntity<Reservierung> findReservierungByMedium(@PathVariable Long mediumId){
+        return reservierungService.getReservierungByMediumId(mediumId)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.noContent().build()); // oder notFound()
+    }}
+
+
+

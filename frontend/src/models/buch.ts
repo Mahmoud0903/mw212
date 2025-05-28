@@ -1,8 +1,10 @@
-import { Medium, MediumStatus } from './medium';
+import { Medium, MediumStatus, MediumTyp } from './medium';
+import { Standort } from './standort';
 
 export class Buch extends Medium {
   isbn: number;
   seitenanzahl: number;
+  standort: Standort;
 
   constructor(buch: {
     mediumId: number;
@@ -11,12 +13,14 @@ export class Buch extends Medium {
     kategorie: string;
     bildLink: string;
     status: MediumStatus;
-    mediumTyp: string;
+    mediumTyp: MediumTyp;
     isbn: number;
     seitenanzahl: number;
+    standort: Standort;
   }) {
-    super(buch); // Übergibt die Basisklassenfelder
+    super(buch);
     this.isbn = buch.isbn;
     this.seitenanzahl = buch.seitenanzahl;
+    this.standort = buch.standort;
   }
 }

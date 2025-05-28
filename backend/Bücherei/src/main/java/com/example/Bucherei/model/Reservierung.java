@@ -3,6 +3,7 @@ package com.example.Bucherei.model;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 public class Reservierung {
@@ -22,6 +23,9 @@ public class Reservierung {
     @Enumerated(EnumType.STRING)
     private ReservierungsStatus status;
 
+    private LocalDateTime reserviertBis;
+
+
     public Reservierung() {
         // leer für JPA
     }
@@ -29,6 +33,7 @@ public class Reservierung {
     public Reservierung(Nutzer nutzer, Medium medium) {
         this.nutzer = nutzer;
         this.medium = medium;
+        this.reserviertBis = LocalDateTime.now().plusMinutes(3880);
         this.reservierungsdatum = LocalDate.now();
         this.status = ReservierungsStatus.OFFEN;
     }
@@ -46,4 +51,13 @@ public class Reservierung {
     public ReservierungsStatus getStatus() { return status; }
 
     public void setStatus(ReservierungsStatus status) { this.status = status; }
+
+    public LocalDateTime getReserviertBis() {
+        return reserviertBis;
+    }
+
+    public void setReserviertBis(LocalDateTime reserviertBis) {
+        this.reserviertBis = reserviertBis;
+    }
+
 }
