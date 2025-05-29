@@ -3,7 +3,7 @@
  * Nach dem Laden der Seite wird die Reservierungsliste generiert und im DOM angezeigt.
  */
 import { Reservierung } from 'src/models/reservierung';
-import { formatDatum, getReservierungenByNutzerId } from 'src/services/reservieren.service';
+import { formatDatum, getReservierungenByNutzerId } from 'src/controller/reservieren.controller';
 
 document.addEventListener('DOMContentLoaded', () => {
   /**

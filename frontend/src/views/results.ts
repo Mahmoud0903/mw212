@@ -5,8 +5,8 @@
 import { Buch } from 'src/models/buch';
 import { Medium, MediumStatus } from 'src/models/medium';
 import { Reservierung } from 'src/models/reservierung';
-import { fetchMediumById, fetchMediumByInput } from 'src/services/medium.service';
-import { formatDatum, getReservierungByMediumId, postReservierung } from 'src/services/reservieren.service';
+import { fetchMediumById, fetchMediumByInput } from 'src/controller/medium.controller';
+import { formatDatum, getReservierungByMediumId, postReservierung } from 'src/controller/reservieren.controller';
 
 export {};
 

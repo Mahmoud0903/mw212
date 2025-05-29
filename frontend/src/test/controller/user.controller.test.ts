@@ -1,4 +1,4 @@
-import { fetchNutzer } from '../../services/user.service';
+import { fetchNutzer } from '../../controller/user.controller';
 import { Nutzer } from '../../models/user';
 
 global.fetch = jest.fn();
