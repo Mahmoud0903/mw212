@@ -14,6 +14,12 @@ import org.slf4j.Logger;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Serviceklasse zur Verwaltung von Reservierungen in der Bibliotheksanwendung.
+ * <p>
+ * Diese Klasse kapselt die Geschäftslogik für das Erstellen, Stornieren und Abfragen von Reservierungen.
+ * Dabei wird sichergestellt, dass der Status von Medien und Reservierungen korrekt angepasst wird.
+ */
 @Service
 public class ReservierungService {
 
@@ -21,6 +27,13 @@ public class ReservierungService {
     private final NutzerRepository nutzerRepository;
     private final MediumRepository mediumRepository;
 
+    /**
+     * Konstruktorinjektion der benötigten Repositories.
+     *
+     * @param rr Reservierungs-Repository
+     * @param nr Nutzer-Repository
+     * @param mr Medium-Repository
+     */
     @Autowired
     public ReservierungService(ReservierungRepository rr, NutzerRepository nr, MediumRepository mr) {
         this.reservierungRepository = rr;
@@ -28,6 +41,18 @@ public class ReservierungService {
         this.mediumRepository = mr;
     }
 
+    /**
+     * Erstellt eine neue Reservierung für ein Medium durch einen Nutzer.
+     * <p>
+     * Das Medium muss verfügbar sein, um reserviert werden zu können.
+     * Der Status des Mediums wird nach erfolgreicher Reservierung auf "RESERVIERT" gesetzt.
+     *
+     * @param nutzerId ID des reservierenden Nutzers
+     * @param mediumId ID des zu reservierenden Mediums
+     * @return die gespeicherte Reservierung
+     * @throws IllegalArgumentException wenn Nutzer oder Medium nicht existieren
+     * @throws IllegalStateException    wenn das Medium nicht verfügbar ist
+     */
     public Reservierung reservieren(Long nutzerId, Long mediumId) {
         Nutzer nutzer = nutzerRepository.findById(nutzerId)
                 .orElseThrow(() -> new IllegalArgumentException("Nutzer nicht gefunden"));
@@ -45,19 +70,42 @@ public class ReservierungService {
         return reservierungRepository.save(reservierung);
     }
 
+    /**
+     * Gibt alle Reservierungen zurück, die einem bestimmten Nutzer zugeordnet sind.
+     *
+     * @param nutzerId ID des Nutzers
+     * @return Liste der Reservierungen
+     */
     public List<Reservierung> findeAlleFuerNutzer(Long nutzerId) {
         return reservierungRepository.findByNutzerNutzerId(nutzerId);
     }
 
     private static final Logger logger = LoggerFactory.getLogger(ReservierungService.class);
 
+    /**
+     * Sucht nach einer Reservierung basierend auf der ID eines Mediums.
+     * <p>
+     * Diese Methode nutzt Logging zur Laufzeitüberwachung.
+     *
+     * @param mediumId ID des Mediums
+     * @return Optional mit der gefundenen Reservierung oder leer
+     */
     public Optional<Reservierung> getReservierungByMediumId(Long mediumId) {
         logger.info("Suche Reservierung für Medium-ID: {}", mediumId);
         return reservierungRepository.findByMediumMediumId(mediumId);
     }
 
-
-
+    /**
+     * Storniert eine offene Reservierung.
+     * <p>
+     * Der Status der Reservierung wird auf "STORNIERT" gesetzt und das zugehörige Medium
+     * wird wieder auf "VERFUEGBAR" gesetzt.
+     *
+     * @param reservierungsId ID der zu stornierenden Reservierung
+     * @return die aktualisierte Reservierung
+     * @throws IllegalArgumentException wenn die Reservierung nicht gefunden wurde
+     * @throws IllegalStateException    wenn die Reservierung nicht mehr offen ist
+     */
     public Reservierung storniereReservierung(Long reservierungsId) {
         Reservierung reservierung = reservierungRepository.findById(reservierungsId)
                 .orElseThrow(() -> new IllegalArgumentException("Reservierung nicht gefunden"));
