@@ -10,7 +10,7 @@ public class Standort {
     private Long id;
 
     @Enumerated(EnumType.STRING)
-    private Stockwerk stockwerk;          // z. B. "1.OG", "Kinderbereich", "Aula"
+    private Stockwerk stockwerk;          // z. B. "1.OG",
     private String regal;         // z. B. "Regal A4"
     private String fach;          // z. B. "Fach 3"
 

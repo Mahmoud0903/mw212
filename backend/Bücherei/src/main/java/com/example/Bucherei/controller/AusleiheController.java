@@ -2,6 +2,7 @@ package com.example.Bucherei.controller;
 
 import com.example.Bucherei.model.Ausleihe;
 import com.example.Bucherei.service.AusleiheService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,6 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/ausleihen")
+@Tag(name = "Ausleihen", description = "Operations related to Ausleihen (Lendings)")
 public class AusleiheController {
 
     @Autowired

@@ -15,7 +15,7 @@ import java.util.Random;
 @Component
 public class BuchSeeder implements CommandLineRunner {
 
-    //private final BuchRepository buchRepository;
+
     private final MediumRepository mediumRepository;
     private final Random random = new Random();
     private final NutzerRepository nutzerRepository; // NEU
@@ -23,9 +23,7 @@ public class BuchSeeder implements CommandLineRunner {
     private final StandortRepository standortRepository;
 
 
-    /*  public BuchSeeder(BuchRepository buchRepository) {
-        this.buchRepository = buchRepository;
-    }*/
+
       public BuchSeeder(MediumRepository mediumRepository, NutzerRepository nutzerRepository, StandortRepository standortRepository) {
         this.mediumRepository = mediumRepository;
         this.nutzerRepository = nutzerRepository;
@@ -55,7 +53,7 @@ public class BuchSeeder implements CommandLineRunner {
 
             Buch buch = new Buch(faker.book().title(),faker.book().author(),"",randomImageLink,MediumStatus.VERFUEGBAR,MediumTyp.BUCH,faker.code().isbn13(),seitenanzahl);
 
-            // ➕ Zufälligen Standort erzeugen
+            //  Zufälligen Standort erzeugen
             Standort standort = new Standort(
                     getZufallsStockwerk(),
                     faker.letterify("???").toUpperCase(),
@@ -76,7 +74,7 @@ public class BuchSeeder implements CommandLineRunner {
     }
 
     public void generiereNutzer() {
-        // 👤 Dummy-Nutzer erzeugen, falls noch nicht vorhanden
+        //  Dummy-Nutzer erzeugen, falls noch nicht vorhanden
         String email = "admin@example.com";
         if (nutzerRepository.findByEmail(email).isEmpty()) {
             Nutzer nutzer = new Nutzer();
